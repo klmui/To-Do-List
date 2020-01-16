@@ -6,7 +6,7 @@ Everyday To-do list assignment for the web development intern position by Kennet
 
 ## Project Details
 
-To run: enter the command "php -S localhost:4000" and open up "localhost:4000/ToDoList/index.html" in Chrome.
+To run: enter the command "php -S localhost:4000" and open up "localhost:4000/index.php" in Chrome.
 
 | Front-end      | Back-end     | 
 | :---           |    :----:    |
