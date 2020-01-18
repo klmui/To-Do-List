@@ -1,7 +1,29 @@
+body {
+    font: 14px, Helvetica, Arial, sans-serif;
+}
+
 .completed {
     text-decoration: line-through;
 }
 
 .btn-link:hover {
     text-decoration: none;
+}
+
+/* Any edit within li and ul */
+ul li .edit {
+    display:none;
+}
+
+/* Any edit in edit mode */
+ul li.edit .edit {
+    display: initial;
+}
+
+ul li.edit .noedit {
+    display: none;
+}
+
+.list-group-flush .list-group-item:first-child {
+    border-top: 0; 
 }
