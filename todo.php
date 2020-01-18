@@ -79,36 +79,8 @@
                 <button class="cancelEdit edit">Cancel</button> 
             </li>
         </template>
-        <div class="accordion" id="taskAccordion">
-            <?php
-                $arr = file_get_contents('tasks.json');
-                $arr = json_decode($arr, true); // decode the JSON into an associative array
-                for ($i = 0; $i < count($arr); $i++) {
-                    $taskName = $arr[$i]['task'];
-                    $id = "#collapse" . strval($arr[$i]['id']);
-                    echo 
-                    "<div class='card'>
-                        <div class='card-header' id='headingOne'>
-                            <h2 class='mb-0'>
-                                <button class='btn btn-link' type='button' data-toggle='collapse' data-target='#collapseOne'
-                                    aria-expanded='true' aria-controls='collapseOne'>
-                                    <span class='title'> $taskName </span>
-                                </button>
-                            </h2>
-                        </div>
-        
-                        <div id='collapseOne' class='collapse show' aria-labelledby='headingOne'
-                            data-parent='#taskAccordion'>
-                            <div class='card-body'>
-                                <button class='btn btn-primary complete'>Complete</button>
-                                <button class='btn btn-danger'>Delete</button>
-                            </div>
-                        </div>
-                    </div>";
-                }
-            ?>
-        </div>
     </div>
+    
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">

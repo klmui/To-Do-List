@@ -1,5 +1,9 @@
-$(document).ready(function(){
+$(function(){
     var taskTemplate = $("#taskListTemplate").html();
+    // Helper method to add item to the to-do list
+    function addTask(task) {
+        $('#tasks').append(Mustache.render(taskTemplate, task));
+    }
 
     // Mark tasks as complete
     var completeButtons = $(".complete");
@@ -24,10 +28,11 @@ $(document).ready(function(){
     }); 
 
     // Add a task to the to-do list and JSON file
-    $('#submitForm').on('click', function() {
+    $('#addTaskForm').submit(function(event) {
+        event.preventDefault(); // Prevent page from reloading after submitting
         $.ajax({
             type: 'POST',
-            url: '/api/posts.php',
+            url: '/api/tasks.php',
             data: {
                 task: $('#taskName').val()
             },
@@ -37,14 +42,8 @@ $(document).ready(function(){
                 addTask(newTask);
             },
             error: function() {
-                alert('Error saving order');
+                alert('Error posting task');
             }
         });
     });
-
-
-    // Helper method to add item to the to-do list
-    function addTask(task) {
-        $('#tasks').append(Mustache.render(taskTemplate, task));
-    }
 });

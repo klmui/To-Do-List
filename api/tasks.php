@@ -9,14 +9,11 @@
     }
 
     // Handle POST request
-    // 'title' is from the post request, not the name of the input
-    // if (isset($_POST['task'])) {
-    //     $task = $_POST['task'];
-    //     if ($task == '') {
-    //         die(error('Error: No title'));
-    //     }
-    //     echo json_encode(createNewTask($task));
-    // } 
+    if ($method == 'POST') {
+        $task = $_POST['task']; // 'task' is from the post request
+        // TODO check task here
+        echo json_encode(createNewTask($task));
+    }
     
     // Add task to JSON file
     function createNewTask(String $task) {
@@ -27,18 +24,18 @@
         $response['task'] = $task;
         $response['complete'] = false;
 
-        // Get data from existing json file, convert it, and push data
-        $jsonData = file_get_contents('tasks.json');
+        // Get data from existing json file, convert it, and push data to file
+        $jsonData = file_get_contents('../tasks.json');
         $arr_data = json_decode($jsonData, true);
         array_push($arr_data, $response);
         $jsonData = json_encode($arr_data, JSON_PRETTY_PRINT);
-        file_put_contents('tasks.json', $jsonData);
+        file_put_contents('../tasks.json', $jsonData);
         return $response;
     }
 
     // Get last id here
     function getId() {
-        $arr = file_get_contents('tasks.json');
+        $arr = file_get_contents('../tasks.json');
         $arr = json_decode($arr, true); // decode the JSON into an associative array
         $lastId = $arr[count($arr) - 1]['id'];
         return $lastId + 1; // Increments id
