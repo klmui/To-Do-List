@@ -34,7 +34,7 @@
                         <a class="nav-link" href="index.html">Dashboard</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="todo.html">To-Do List <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="todo.php">To-Do List <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
             </div>
@@ -55,7 +55,7 @@
                         <div class="col-sm-9 my-1">
                             <label class="sr-only" for="taskName">Task Name</label>
                             <input type="text" class="form-control" id="taskName" name="taskName"
-                                placeholder="Task name" required>
+                                placeholder="Task name">
                         </div>
                         <div class="col-auto my-1">
                             <button type="submit" class="btn btn-primary add-task-btn">Submit</button>
@@ -65,45 +65,47 @@
             </div>
         </div>
 
-        <div class="accordion" id="accordionExample">
+        <div class="accordion" id="taskAccordion">
             <?php
                 $arr = file_get_contents('tasks.json');
                 $arr = json_decode($arr, true); // decode the JSON into an associative array
                 for ($i = 0; $i < count($arr); $i++) {
                     $taskName = $arr[$i]['task'];
-                    $id = strval($arr[$i]['id']);
-                    echo "<div class='card'>
-                    <div class='card-header' id='headingOne'>
-                        <h2 class='mb-0'>
-                            <button class='title-btn btn btn-link' type='button' data-toggle='collapse' data-target='#collapseOne'
-                                aria-expanded='true' aria-controls='collapseOne'>
-                                $taskName
-                            </button>
-                        </h2>
-                    </div>
-    
-                    <div id='collapseOne' class='collapse show' aria-labelledby='headingOne'
-                        data-parent='#accordionExample'>
-                        <div class='card-body'>
-                            <button class='btn btn-primary complete'>Complete</button>
-                            <button class='btn btn-danger'>Delete</button>
+                    $id = "#collapse" . strval($arr[$i]['id']);
+                    echo 
+                    "<div class='card'>
+                        <div class='card-header' id='headingOne'>
+                            <h2 class='mb-0'>
+                                <button class='btn btn-link' type='button' data-toggle='collapse' data-target='#collapseOne'
+                                    aria-expanded='true' aria-controls='collapseOne'>
+                                    <span class='title'> $taskName </span>
+                                </button>
+                            </h2>
                         </div>
-                    </div>
+        
+                        <div id='collapseOne' class='collapse show' aria-labelledby='headingOne'
+                            data-parent='#taskAccordion'>
+                            <div class='card-body'>
+                                <button class='btn btn-primary complete'>Complete</button>
+                                <button class='btn btn-danger'>Delete</button>
+                            </div>
+                        </div>
                     </div>";
                 }
             ?>
         </div>
     </div>
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-    <script src="todo.js"></script>
+    <script src="./todo.js"></script>
 </body>
 </html>

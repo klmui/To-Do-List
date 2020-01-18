@@ -1,5 +1,17 @@
 [
-    {"id": 1, "task": "Laundry", "complete": false},
-    {"id": 2, "task": "Take out the Trash", "complete": true},
-    {"id": 3, "task": "Homework", "complete": false} 
+    {
+        "id": 1,
+        "task": "Laundry",
+        "complete": false
+    },
+    {
+        "id": 2,
+        "task": "Take out the Trash",
+        "complete": true
+    },
+    {
+        "id": 3,
+        "task": "Homework",
+        "complete": false
+    }
 ]
