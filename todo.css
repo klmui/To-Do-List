@@ -27,3 +27,7 @@ ul li.edit .noedit {
 .list-group-flush .list-group-item:first-child {
     border-top: 0; 
 }
+
+.list-group-flush .list-group-item:last-child {
+    border-bottom: 0; 
+}

@@ -14,6 +14,28 @@
         // TODO check task here
         echo json_encode(createNewTask($task));
     }
+
+    // Handle DELETE request
+    if ($method == 'DELETE') {
+        // Get data-id
+        $id = explode("/", $_SERVER['PHP_SELF'])[3];
+        $data = file_get_contents('../tasks.json');
+        // decode json to associative array
+        $json_arr = json_decode($data, true);
+        // get array index to delete
+        $arr_index = array();
+        foreach ($json_arr as $key => $value) {
+            if ($value['id'] == $id) {
+                $arr_index = $key;
+            }
+        }
+        // delete data
+        unset($json_arr[$arr_index]);
+        // rebase array
+        $json_arr = array_values($json_arr);
+        // encode array to json and save to file
+        file_put_contents('../tasks.json', json_encode($json_arr, JSON_PRETTY_PRINT));
+    }
     
     // Add task to JSON file
     function createNewTask(String $task) {

@@ -43,7 +43,7 @@
 
     <div class="container">
         <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#addForm"
+            <button class="btn btn-primary" type="button" id="add" data-toggle="collapse" data-target="#addForm"
                 aria-expanded="false" aria-controls="addForm">
                 +
             </button>
@@ -80,7 +80,7 @@
             </li>
         </template>
     </div>
-    
+
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
