@@ -68,7 +68,7 @@
             <!-- To be filled -->
         </ul>
         <template id="taskListTemplate"> 
-            <li class="list-group-item">
+            <li class="list-group-item" data-id='{{id}}'>
                 <p>
                     <span class="noedit task">{{task}}</span>
                     <input class="edit task"/>

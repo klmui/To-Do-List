@@ -36,6 +36,28 @@
         // encode array to json and save to file
         file_put_contents('../tasks.json', json_encode($json_arr, JSON_PRETTY_PRINT));
     }
+
+    // Handle PUT request
+    if ($method == 'PUT') {
+        $id = explode("/", $_SERVER['PHP_SELF'])[3];
+        $data = file_get_contents('../tasks.json');
+        // decode json to associative array
+        $json_arr = json_decode($data, true);
+         // get array index to update
+         $arr_index = array();
+         foreach ($json_arr as $key => $value) {
+             if ($value['id'] == $id) {
+                 $arr_index = $key;
+             }
+         }
+         // update data
+        parse_str(file_get_contents("php://input"), $putVars); // Get data sent in
+        $json_arr[$arr_index]['task'] = $putVars['task'];
+        // rebase array
+        $json_arr = array_values($json_arr);
+        // encode array to json and save to file
+        file_put_contents('../tasks.json', json_encode($json_arr, JSON_PRETTY_PRINT));
+    }
     
     // Add task to JSON file
     function createNewTask(String $task) {

@@ -68,6 +68,34 @@ $(function(){
     });
 
     // Update a task on the screen and on the json file
+    $('#tasks').delegate('.editOrder', 'click', function() {
+        var $li = $(this).closest('li');
+        $li.find('input.task').val($li.find('span.task').html()); // Setting input to same as span
+        $li.addClass('edit');
+    });
+
+    $('#tasks').delegate('.cancelEdit', 'click', function() {
+        $(this).closest('li').removeClass('edit');
+    });
+
+    $('#tasks').delegate('.saveEdit', 'click', function() {
+        var $li = $(this).closest('li');
+        var task = $li.find('input.task').val();
+        $.ajax({
+            type: 'PUT',
+            url: '/api/tasks.php/' + $li.attr('data-id'),
+            data: {
+                task: task
+            },
+            success: function(newOrder) {
+                $li.find('span.task').html(task);
+                $li.removeClass('edit');
+            },
+            error: function() {
+                alert('error updating order');
+            }
+        });  
+    });
 
     // Helper method to add item to the to-do list
     function addTask(task) {
