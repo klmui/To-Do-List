@@ -96,10 +96,12 @@ $(function(){
         $li.addClass('edit');
     });
 
+    // Cancel edit
     $('#tasks').delegate('.cancelEdit', 'click', function() {
         $(this).closest('li').removeClass('edit');
     });
 
+    // Save edit
     $('#tasks').delegate('.saveEdit', 'click', function() {
         var $li = $(this).closest('li');
         var task = $li.find('input.task').val();

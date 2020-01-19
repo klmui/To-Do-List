@@ -29,11 +29,9 @@
                 $arr_index = $key;
             }
         }
-        // delete data
+        // Delete data and update json file
         unset($json_arr[$arr_index]);
-        // rebase array
         $json_arr = array_values($json_arr);
-        // encode array to json and save to file
         file_put_contents('../tasks.json', json_encode($json_arr, JSON_PRETTY_PRINT));
     }
 
@@ -50,7 +48,7 @@
                  $arr_index = $key;
              }
          }
-         // update data
+         // Update data
         parse_str(file_get_contents("php://input"), $putVars); // Get data sent in
         if (isset($putVars['task'])) {
             $json_arr[$arr_index]['task'] = $putVars['task'];
@@ -59,13 +57,12 @@
             $doneStatus = $putVars['complete'];
             $json_arr[$arr_index]['complete'] = $doneStatus === 'true' ? true: false;
         }
-        // rebase array
+        // Update json file
         $json_arr = array_values($json_arr);
-        // encode array to json and save to file
         file_put_contents('../tasks.json', json_encode($json_arr, JSON_PRETTY_PRINT));
     }
     
-    // Add task to JSON file
+    // Add task to json file
     function createNewTask(String $task) {
         $response = array();
 
