@@ -52,7 +52,13 @@
          }
          // update data
         parse_str(file_get_contents("php://input"), $putVars); // Get data sent in
-        $json_arr[$arr_index]['task'] = $putVars['task'];
+        if (isset($putVars['task'])) {
+            $json_arr[$arr_index]['task'] = $putVars['task'];
+        }
+        if (isset($putVars['complete'])) {
+            $doneStatus = $putVars['complete'];
+            $json_arr[$arr_index]['complete'] = $doneStatus === 'true' ? true: false;
+        }
         // rebase array
         $json_arr = array_values($json_arr);
         // encode array to json and save to file

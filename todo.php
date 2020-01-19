@@ -14,6 +14,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="todo.css">
+    <link rel="icon" type="image/gif/png" href="favicon.png">
     <title>To-Do List</title>
 </head>
 
@@ -67,16 +68,34 @@
         <ul class="list-group list-group-flush" id="tasks">
             <!-- To be filled -->
         </ul>
-        <template id="taskListTemplate"> 
-            <li class="list-group-item" data-id='{{id}}'>
-                <p>
-                    <span class="noedit task">{{task}}</span>
-                    <input class="edit task"/>
-                </p> 
-                <button data-id='{{id}}' class='remove'>X</button>
-                <button class="editOrder noedit">Edit</button> 
-                <button class="saveEdit edit">Save</button> 
-                <button class="cancelEdit edit">Cancel</button> 
+        <template id="taskListIncompleteTemplate"> 
+            <li class="d-flex list-group-item" data-id='{{id}}'>
+                <div class="mr-auto">
+                    <span class="noedit task title">{{task}}</span>
+                    <input class="form-control edit task"/>
+                </div>
+                <div class="ml-auto">
+                    <button class="btn btn-success doneButton"><i class="fas fa-check"></i></button>
+                    <button class="btn btn-primary editTask noedit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class='btn btn-danger remove' data-id='{{id}}'><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary saveEdit edit">Save</button> 
+                    <button class="btn btn-light cancelEdit edit">Cancel</button> 
+                </div>
+            </li>
+        </template>
+        <template id="taskListCompletedTemplate"> 
+            <li class="d-flex list-group-item" data-id='{{id}}'>
+                <div class="mr-auto">
+                    <span class="noedit task completed title">{{task}}</span>
+                    <input class="form-control edit task"/>
+                </div>
+                <div class="ml-auto">
+                    <button class="btn btn-success doneButton"><i class="fas fa-check"></i></button>
+                    <button class="btn btn-primary editTask noedit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class='btn btn-danger remove' data-id='{{id}}'><i class="fas fa-trash"></i></button>
+                    <button class="btn btn-primary saveEdit edit">Save</button> 
+                    <button class="btn btn-light cancelEdit edit">Cancel</button> 
+                </div>
             </li>
         </template>
     </div>

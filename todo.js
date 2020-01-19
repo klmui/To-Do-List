@@ -1,10 +1,26 @@
 $(function(){
-    var taskTemplate = $("#taskListTemplate").html();
-
-    // Mark tasks as complete
-    var completeButtons = $(".complete");
-    completeButtons.on("click", function () {
-        $(this).parent().parent().parent().find("span.title").toggleClass("completed");
+    // Mark tasks as complete and update json file
+    $('#tasks').delegate('.doneButton', 'click', function(){
+        $title = $(this).closest('li').find('span.title');
+        $li = $(this).closest('li')
+        var doneStatus = false;
+        if ($title.hasClass('completed')) {
+            doneStatus = true;
+        }
+        // Send PUT request to update json file
+        $.ajax({
+            type: 'PUT',
+            url: '/api/tasks.php/' + $li.attr('data-id'),
+            data: {
+                complete: doneStatus
+            },
+            success: function(newOrder) {
+                $title.toggleClass('completed');
+            },
+            error: function() {
+                alert('error updating task');
+            }
+        });  
     });
 
     // Get tasks
@@ -27,12 +43,17 @@ $(function(){
     $('#addTaskForm').submit(function(event) {
         event.preventDefault(); // Prevent page from reloading after submitting
         $taskName = $('#taskName').val();
+
+        // Check if task is valid
         if ($taskName != '') {
             $('#add').trigger("click");
             $('#taskName').val('');
+        } else {
+            alert("No title was entered");
+            return;
         }
 
-        console.log(event);
+        // Send POST request
         $.ajax({
             type: 'POST',
             url: '/api/tasks.php',
@@ -55,6 +76,7 @@ $(function(){
         // Get li of the task
         var $li = $(this).closest('li');
 
+        // Send DELETE request
         $.ajax({
             type: 'DELETE',
             url: '/api/tasks.php/' + $(this).attr('data-id'),
@@ -68,7 +90,7 @@ $(function(){
     });
 
     // Update a task on the screen and on the json file
-    $('#tasks').delegate('.editOrder', 'click', function() {
+    $('#tasks').delegate('.editTask', 'click', function() {
         var $li = $(this).closest('li');
         $li.find('input.task').val($li.find('span.task').html()); // Setting input to same as span
         $li.addClass('edit');
@@ -81,6 +103,8 @@ $(function(){
     $('#tasks').delegate('.saveEdit', 'click', function() {
         var $li = $(this).closest('li');
         var task = $li.find('input.task').val();
+
+        // Send PUT request
         $.ajax({
             type: 'PUT',
             url: '/api/tasks.php/' + $li.attr('data-id'),
@@ -92,13 +116,23 @@ $(function(){
                 $li.removeClass('edit');
             },
             error: function() {
-                alert('error updating order');
+                alert('error updating task');
             }
         });  
     });
 
     // Helper method to add item to the to-do list
     function addTask(task) {
-        $('#tasks').append(Mustache.render(taskTemplate, task));
+        // console.log("task completed: " + task.complete);
+        // if (task.complete) {
+        //     $("#taskDisplay").addClass('completed');
+        // } else {
+        //     $("#taskDisplay").removeClass('completed');
+        // }
+        if (task.complete) {
+            $('#tasks').append(Mustache.render($("#taskListCompletedTemplate").html(), task));
+        } else {
+            $('#tasks').append(Mustache.render($("#taskListIncompleteTemplate").html(), task));
+        }
     }
 });
