@@ -11,14 +11,14 @@
     // Handle POST request
     if ($method == 'POST') {
         $task = $_POST['task']; // 'task' is from the post request
-        // TODO check task here
         echo json_encode(createNewTask($task));
     }
 
     // Handle DELETE request
     if ($method == 'DELETE') {
         // Get data-id
-        $id = explode("/", $_SERVER['PHP_SELF'])[3];
+        $id = $_SERVER['PHP_SELF'][strlen($_SERVER['PHP_SELF']) - 1];
+
         $data = file_get_contents('../tasks.json');
         // decode json to associative array
         $json_arr = json_decode($data, true);
@@ -37,22 +37,25 @@
 
     // Handle PUT request
     if ($method == 'PUT') {
-        $id = explode("/", $_SERVER['PHP_SELF'])[3];
+        // Get data-id
+        $id = $_SERVER['PHP_SELF'][strlen($_SERVER['PHP_SELF']) - 1];
+        
         $data = file_get_contents('../tasks.json');
-        // decode json to associative array
+        // Decode json to associative array
         $json_arr = json_decode($data, true);
-         // get array index to update
+         // Get array index to update
          $arr_index = array();
          foreach ($json_arr as $key => $value) {
              if ($value['id'] == $id) {
                  $arr_index = $key;
              }
          }
-         // Update data
         parse_str(file_get_contents("php://input"), $putVars); // Get data sent in
+        // Update task
         if (isset($putVars['task'])) {
             $json_arr[$arr_index]['task'] = $putVars['task'];
         }
+        // Update the 'complete' field
         if (isset($putVars['complete'])) {
             $doneStatus = $putVars['complete'];
             $json_arr[$arr_index]['complete'] = $doneStatus === 'true' ? true: false;
@@ -67,7 +70,7 @@
         $response = array();
 
         // Create the response
-        $response["id"] = getId();
+        $response["id"] = makeId();
         $response['task'] = $task;
         $response['complete'] = false;
 
@@ -81,7 +84,7 @@
     }
 
     // Get last id here
-    function getId() {
+    function makeId() {
         $arr = file_get_contents('../tasks.json');
         $arr = json_decode($arr, true); // decode the JSON into an associative array
         $lastId = $arr[count($arr) - 1]['id'];

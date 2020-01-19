@@ -22,7 +22,7 @@
         <div class="container">
             <a class="navbar-brand" href="index.html">
                 <i class="fas fa-tasks d-inline-block" width="30" height="30" alt="Image brand"></i>
-                Everyday To-Do List
+                To-Do List
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,31 +41,49 @@
         </div>
     </nav>
 
-    <h1 class="text-center">Welcome to Your Dashboard!</h1>
+    <h1 class="text-center mb-4" id="welcome">Welcome to Your Dashboard!</h1>
 
-    <div class="container progress-bars">
-        <label for="incomplete">Incompleted Tasks:</label>
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar"
-                id="incomplete"><span id="incompletePercent"></span></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="container progress-bars px-0">
+                    <label for="incomplete">Incompleted Tasks: <span id="numIncompleteTasks"></span></label>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
+                            role="progressbar" id="incomplete"><span id="incompletePercent"></span></div>
+                    </div>
+                    <label for="complete">Completed Tasks: <span id="numCompletedTasks"></span></label>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary"
+                            role="progressbar" id="complete"><span id="completedPercent"></span></div>
+                    </div>
+                </div>
+                <p class="mb-3">
+                    Total number of tasks: <span id="totalNumTasks"></span>
+                </p>
+                <div id="piechart"></div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-8 offset-2 px-0" style="background-color: #eee;">
+                        <div class="d-flex justify-content-end pt-2 bg-white" align="right">
+                            <div id="completedTab">
+                                <p class="m-0">Completed</p>
+                            </div>
+                            <div id="incompletedTab" class="active">
+                                <p class="m-0">Upcoming</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div id="completedTasks" class="d-none">
+                            </div>
+                            <div id="incompletedTasks" class="d-block">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <label for="complete">Completed Tasks:</label>
-        <div class="progress">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar"
-                id="complete"><span id="completedPercent"></span></div>
-        </div>
-
-        <p>
-            The Total number of tasks in the list: <span id="totalNumTasks"></span>
-        </p>
-
-        <p>
-            The current number of tasks marked complete: <span id="completedTasks"></span>
-        </p>
-
-        <p>
-            The current number of tasks marked incomplete: <span id="incompleteTasks"></span>
-        </p>
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -78,45 +96,104 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.1.0/mustache.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
     <script>
-       // Get tasks
-        $.ajax({
-            type: 'GET',
-            url: '/api/tasks.php',
-            dataType: 'json',
-            success: function(tasks) {
-                // Update the total number of tasks
-                var totalNumTasks = tasks.length;
-                $('#totalNumTasks').text(totalNumTasks);
+        $(document).ready(function () {
+            $("#welcome").hide().fadeIn('slow');
 
-                // Get the number of completed tasks
-                var completedTasks = 0;
-                var incompleteTasks = 0;
-                $.each(tasks, function(index, task){
-                    if (task.complete) {
-                        completedTasks++;
-                    } else {
-                        incompleteTasks++;
-                    }
-                });
+            // Number of completed and incompleted tasks
+            var completedTasks = 0;
+            var incompletedTasks = 0;
 
-                // Update text fields for completed tasks and incompleted tasks
-                $('#completedTasks').text(completedTasks);
-                $('#incompleteTasks').text(incompleteTasks);
+            // Get tasks
+            $.ajax({
+                type: 'GET',
+                url: 'api/tasks.php',
+                dataType: 'json',
+                success: function (tasks) {
+                    $.each(tasks, function (index, task) {
+                        if (task.complete) {
+                            $('#completedTasks').append(createTaskItem(task.task,
+                                completedTasks % 2));
+                            completedTasks++;
+                        } else {
+                            $('#incompletedTasks').append(createTaskItem(task.task,
+                                incompletedTasks % 2));
+                            incompletedTasks++;
+                        }
+                    });
+                    // Update text fields for completed tasks, incompleted tasks, and total tasks
+                    $('#numCompletedTasks').text(completedTasks);
+                    $('#numIncompleteTasks').text(incompletedTasks);
+                    $('#totalNumTasks').text(tasks.length);
 
-                // Update progress bars
-                var incompletePercent = Math.round((incompleteTasks / totalNumTasks) * 100);
-                var completedPercent = 100 - incompletePercent;
-                $('#incompletePercent').text(incompletePercent.toString() + '%');
-                $('#completedPercent').text(completedPercent.toString() + "%");
-                $('#incomplete').css('width', incompletePercent.toString() + '%');
-                $('#complete').css('width', completedPercent.toString() + '%');
+                    // Update progress bars
+                    var incompletePercent = Math.round((incompletedTasks / tasks.length) * 100);
+                    var completedPercent = 100 - incompletePercent;
+                    $('#incompletePercent').text(incompletePercent.toString() + '%');
+                    $('#completedPercent').text(completedPercent.toString() + "%");
+                    $('#incomplete').css('width', incompletePercent.toString() + '%');
+                    $('#complete').css('width', completedPercent.toString() + '%');
+                },
+                error: function () {
+                    alert('Error loading tasks');
+                }
+            });
 
-            },
-            error: function() {
-                alert('Error loading tasks');
+            function createTaskItem(task, order) {
+                return order == 1 ?
+                    `<div class="task-item text-primary" style="background-color: #ebebeb;"><p class="m-0"><a href="todo.html">${task}</a></p></div>` :
+                    `<div class="task-item text-primary" style="background-color: #f5f5f5;"><p class="m-0"><a href="todo.html">${task}</a></p></div>`
             }
-        }); 
+
+            $('#completedTab').on("click", function () {
+                $('#completedTab').addClass('active');
+                $('#incompletedTab').removeClass('active');
+
+                $('#completedTasks').addClass('d-block');
+                $('#completedTasks').removeClass('d-none');
+                $('#incompletedTasks').addClass('d-none');
+                $('#incompletedTasks').removeClass('d-block');
+            })
+
+            $('#incompletedTab').on("click", function () {
+                $('#incompletedTab').addClass('active');
+                $('#completedTab').removeClass('active');
+
+                $('#incompletedTasks').addClass('d-block');
+                $('#incompletedTasks').removeClass('d-none');
+                $('#completedTasks').addClass('d-none');
+                $('#completedTasks').removeClass('d-block');
+            })
+
+            // Load google charts
+            google.charts.load('current', {
+                'packages': ['corechart']
+            });
+            google.charts.setOnLoadCallback(drawChart);
+
+            // Draw the chart and set the chart values
+            function drawChart() {
+                var data = google.visualization.arrayToDataTable([
+                    ['Status', 'Number of tasks'],
+                    ['Completed tasks', completedTasks],
+                    ['Incompleted tasks', incompletedTasks]
+                ]);
+
+                // Optional; add a title and set the width and height of the chart
+                var options = {
+                    'title': 'Tasks status',
+                    'width': 650,
+                    'height': 400
+                };
+
+                // Display the chart inside the <div> element with id="piechart"
+                var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                chart.draw(data, options);
+            }
+        });
     </script>
 </body>
+
 </html>
