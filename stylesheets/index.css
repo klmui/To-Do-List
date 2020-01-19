@@ -16,11 +16,3 @@ nav {
 .progress {
     margin-bottom: 2rem;
 }
-
-#complete {
-    width: 80%;
-}
-
-#incomplete {
-    width: 20%;
-}
