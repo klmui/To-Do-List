@@ -90,10 +90,4 @@
         $lastId = $arr[count($arr) - 1]['id'];
         return $lastId + 1; // Increments id
     }
-
-     // Function to print out error messages to the console
-     function error($msg) {
-        $response = array("success" => false, "message" => $msg);
-        return json_encode($response);
-    }
 ?>

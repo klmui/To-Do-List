@@ -2,7 +2,8 @@ $(function(){
     // Mark tasks as complete and update json file
     $('#tasks').delegate('.doneButton', 'click', function(){
         $title = $(this).closest('li').find('span.title');
-        $li = $(this).closest('li')
+        $li = $(this).closest('li');
+        $title.toggleClass('completed');
         var doneStatus = false;
         if ($title.hasClass('completed')) {
             doneStatus = true;
@@ -15,7 +16,6 @@ $(function(){
                 complete: doneStatus
             },
             success: function(newOrder) {
-                $title.toggleClass('completed');
             },
             error: function() {
                 alert('error updating task');
@@ -123,12 +123,6 @@ $(function(){
 
     // Helper method to add item to the to-do list
     function addTask(task) {
-        // console.log("task completed: " + task.complete);
-        // if (task.complete) {
-        //     $("#taskDisplay").addClass('completed');
-        // } else {
-        //     $("#taskDisplay").removeClass('completed');
-        // }
         if (task.complete) {
             $('#tasks').append(Mustache.render($("#taskListCompletedTemplate").html(), task));
         } else {
