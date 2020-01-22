@@ -108,7 +108,7 @@ $(function () {
         // Send PUT request
         $.ajax({
             type: 'PUT',
-            url: 'api/tasks.php/' + $li.attr('data-id'),
+            url: 'api/tasks.php/' + $li.attr('data-id`  `   `   '),
             data: {
                 task: task
             },
