@@ -1,5 +1,7 @@
 $(function () {
     // Mark tasks as complete and update json file
+    // Makes sure actions work the same for tasks
+    // Targets parent of class 'doneButton' 
     $('#tasks').delegate('.doneButton', 'click', function () {
         $title = $(this).closest('li').find('span.title');
         $li = $(this).closest('li');
