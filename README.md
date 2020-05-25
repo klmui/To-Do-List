@@ -19,7 +19,7 @@ Make sure you are in your project directory in cmd or Git Bash.
 ```
 
 ```
-Run the command "php -S localhost:4000" and open up "localhost:4000/index.html" in Chrome.
+Run the command "php -S localhost:4000" and open up "localhost:4000/index.php" in Chrome.
 ```
 
 ## Built With
